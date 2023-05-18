@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled8/controller/add_advertisement_controller.dart';
-import 'package:untitled8/controller/gsheet_controller.dart';
+import 'package:untitled8/controller/authController.dart';
 import 'package:untitled8/view/ComplantScreen/complaint_screen.dart';
+import 'package:untitled8/view/auth_screen/lgoin_screen.dart';
 import 'controller/ComplaintController.dart';
 import 'controller/add_news_controllr.dart';
 import 'firebase_options.dart';
@@ -13,6 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Get.put(AuthController());
   Get.put(ComlaintController());
   Get.lazyPut(() => AdsController());
   Get.lazyPut(() => NewsController());
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ComplaintScreen(),
+      home: LoginPage(),
 
 
     );

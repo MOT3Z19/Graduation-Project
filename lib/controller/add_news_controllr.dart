@@ -28,6 +28,8 @@ class NewsController extends GetxController {
     }
   }
 
+
+
   Future<void> updateNews(
       String id, String title, String content, String? imageUrl) async {
     try {

@@ -1,15 +1,15 @@
 class User {
   final String email;
-  final String username;
-  final String mobileNumber;
+  final String phoneNumber;
+  final String name;
   final String subscriptionNumber;
-  final String password;
+  final String idNumber;
 
   User({
     required this.email,
-    required this.username,
-    required this.mobileNumber,
+    required this.phoneNumber,
+    required this.name,
     required this.subscriptionNumber,
-    required this.password,
+    required this.idNumber,
   });
 }

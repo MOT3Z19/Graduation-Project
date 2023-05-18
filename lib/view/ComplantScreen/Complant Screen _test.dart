@@ -1,27 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:untitled8/controller/ComplaintController.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled8/model/Complaint.dart';
 
-import '../../model/Complaint.dart';
-import 'AddComplaintView.dart';
-import 'EditComplanet.dart';
+import '../../controller/ComplaintController.dart';
+import '../../controller/authController.dart';
 
-class ComlaintScreen extends StatelessWidget {
-  final ComlaintController messController = Get.put(ComlaintController());
+class ComplaintPage extends StatelessWidget {
+  final AuthController _authController = Get.find();
+  final ComlaintController _comlaintController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Get.to(() => MessageFormWidget());
-        },child: Icon(Icons.add),
-      ),
       appBar: AppBar(
-        title: Text('Complants'),
+        title: Text('Complaint Details'),
       ),
       body: StreamBuilder<List<Comlpaint>>(
-        stream: messController.getComlaint(),
+        stream: _comlaintController.getComplaintData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final complants = snapshot.data!;
@@ -35,14 +32,8 @@ class ComlaintScreen extends StatelessWidget {
                     backgroundImage: NetworkImage(complant.imageUrl!),
                   )
                       : null,
-                  title: Text(complant.title),
+                  title: Text(complant.title,style: GoogleFonts.cairo(color: Colors.black),),
                   subtitle: Text(complant.description),
-                  trailing: IconButton(icon: Icon(Icons.delete,color: Colors.red,),onPressed: () async{
-                    await messController.deleteComlaint(complant.id!);
-                  }),
-                  onTap: () async {
-                    Get.to(() => EditComplantPage(comlaint: complant,));
-                  },
                 );
               },
             );

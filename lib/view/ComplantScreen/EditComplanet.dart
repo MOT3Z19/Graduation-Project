@@ -14,7 +14,7 @@
  class EditComplantPage extends StatelessWidget {
    final ComlaintController messageController = Get.find();
 
-   late Comlaint comlaint;
+   late Comlpaint comlaint;
 
    final TextEditingController _statusController = TextEditingController();
 

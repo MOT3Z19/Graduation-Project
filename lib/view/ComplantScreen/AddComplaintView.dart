@@ -7,7 +7,7 @@ import '../../controller/ComplaintController.dart';
 import '../../model/Complaint.dart';
 
 class MessageFormWidget extends StatefulWidget {
-  final Comlaint? comlaint;
+  final Comlpaint? comlaint;
 
   const MessageFormWidget({Key? key, this.comlaint}) : super(key: key);
 

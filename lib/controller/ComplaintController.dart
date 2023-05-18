@@ -1,18 +1,27 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:untitled8/controller/authController.dart';
 import 'package:uuid/uuid.dart';
 
 import '../model/Complaint.dart';
 
 class ComlaintController extends GetxController {
+
   CollectionReference comlaint =
-  FirebaseFirestore.instance.collection('Comlaint');
-  RxList<Comlaint> messageList = <Comlaint>[].obs;
+  FirebaseFirestore.instance.collection('complaints');
+  RxList<Comlpaint> complaints = <Comlpaint>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final RxString selectedType = ''.obs;
+  final AuthController _authController = Get.find();
+
+
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
 
@@ -21,17 +30,38 @@ class ComlaintController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    messageList.bindStream(getComlaint());
+    complaints.bindStream(getComlaint());
+  }
+
+
+  Future<void> fetchComplaints(String selectedType) async {
+    try {
+      Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('complaints');
+
+      if (selectedType.isNotEmpty) {
+        query = query.where('type', isEqualTo: selectedType);
+      }
+
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await query.orderBy('date').get();
+
+      final List<Comlpaint> fetchedComplaints = snapshot.docs
+          .map((doc) => Comlpaint.fromMap(doc.id, doc.data()))
+          .toList();
+
+      complaints.value = fetchedComplaints;
+    } catch (e) {
+      Get.snackbar('Error', 'Error fetching complaints: ${e.toString()}');
+    }
   }
 
 
 
-
-  Stream<List<Comlaint>> get comlaintStream {
-    return _firestore.collection('Comlaint').snapshots().map((snapshot) {
+  Stream<List<Comlpaint>> get comlaintStream {
+    String uid = _authController.firebaseUser.value!.uid;
+    return _firestore.collection('complaints').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data()!;
-        return Comlaint(
+        return Comlpaint(
           id: doc.id,
           title: data['title'],
           description: data['description'],
@@ -45,11 +75,34 @@ class ComlaintController extends GetxController {
       }).toList();
     });
   }
+  Stream<List<Comlpaint>> getComplaintData() {
+    String myId = _authController.firebaseUser.value!.uid;
+    return FirebaseFirestore.instance
+        .collection('Complaint')
+        .where('userId', isEqualTo: myId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) {
+      final data = doc.data();
+      return Comlpaint(
+        id: doc.id,
+        title: data['title'],
+        description: data['description'],
+        type: data['type'],
+        address: data['address'],
+        imageUrl: data['imageUrl'],
+        userId: data['userId'],
+        status: data['status'],
+        time: data['time'],
+      );
+    }).toList());
+  }
 
-  Stream<List<Comlaint>> getComlaint() {
+
+
+  Stream<List<Comlpaint>> getComlaint() {
     return comlaint.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        return Comlaint(
+        return Comlpaint(
           id: doc.id,
           title: doc['title'],
           description: doc['description'],
@@ -58,17 +111,16 @@ class ComlaintController extends GetxController {
           imageUrl: doc['imageUrl'],
           userId:doc['userId'],
           status:doc['status'],
-          time: doc['time'],
+          time: (doc['time'] as Timestamp).toDate(), // Convert Timestamp to DateTime
         );
       }).toList();
     });
   }
 
 
-
   Future<void> addComlaint(
       String title, String description,String address ,String type, XFile imageFile) async {
-    String userId = Uuid().v4();
+    String myId = FirebaseAuth.instance.currentUser!.uid;
 
     String imageName = DateTime.now().toString() + '.png';
     Reference ref = FirebaseStorage.instance.ref().child(imageName);
@@ -76,7 +128,7 @@ class ComlaintController extends GetxController {
     TaskSnapshot taskSnapshot = await uploadTask;
     String imageUrl = await taskSnapshot.ref.getDownloadURL();
     await comlaint.add({
-      'userId': userId,
+      'userId': myId,
       'title': title,
       'description': description,
       'type': type,

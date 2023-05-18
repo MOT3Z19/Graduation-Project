@@ -129,14 +129,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  dropdown_button2:
-    dependency: "direct main"
-    description:
-      name: dropdown_button2
-      sha256: "13bf78b6e5b6ca7256701988b22e078cd94b41bfab8d68a128651734702e0d1b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.2"
   fake_async:
     dependency: transitive
     description:
@@ -233,14 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
-  firebase_phone_auth_handler:
-    dependency: "direct main"
-    description:
-      name: firebase_phone_auth_handler
-      sha256: "586e69d6a14eb1276634bbf73a1ede598e85e14e95ea887c67e6d9c62fb6e821"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -440,14 +424,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -460,10 +436,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider
-      sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
+      sha256: "3087813781ab814e4157b172f1a11c46be20179fcc9bea043e0fba36bc0acaa2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.14"
+    version: "2.0.15"
   path_provider_android:
     dependency: transitive
     description:
@@ -528,14 +504,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.5"
   sky_engine:
     dependency: transitive
     description: flutter

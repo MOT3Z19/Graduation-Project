@@ -8,7 +8,7 @@ import '../../controller/ComplaintController.dart';
 import '../../model/Complaint.dart';
 
 class ComplaintScreen extends StatefulWidget {
-  late final Comlaint? comlaint;
+  late final Comlpaint? comlaint;
 
   @override
   State<ComplaintScreen> createState() => _ComplaintScreenState();
